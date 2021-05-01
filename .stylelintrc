@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-rational-order",
+    "stylelint-config-recommended-scss",
+  ],
+  "plugins": [
+    "stylelint-order",
+    "stylelint-config-rational-order/plugin",
+    "stylelint-selector-bem-pattern",
+  ],
+  "rules": {
+    "declaration-empty-line-before": null,
+    "order/properties-order": [],
+    "plugin/rational-order": [true, {
+      "border-in-box-model": true,
+      "empty-line-between-groups": true,
+    }]
+  }
+}
