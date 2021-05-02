@@ -10,6 +10,10 @@ const svgmin = require('gulp-svgmin');
 const cheerio = require('gulp-cheerio');
 const replace = require('gulp-replace');
 const svgSprite = require('gulp-svg-sprite');
+const imagemin = require('gulp-imagemin');
+const pngquant =require('imagemin-pngquant');
+const imageminJpegRecompress = require('imagemin-jpeg-recompress');
+const imageminJpegtran = require('imagemin-jpegtran');
 const browserSync = require('browser-sync').create();
 
 let isMap = process.argv.includes('--map');
@@ -43,6 +47,17 @@ function styles(){
 function images(){
 	return gulp.src('./src/img/**/*.{jpg,png}')
 				// size down, webp
+				.pipe(imagemin([
+          imageminJpegtran({progressive: true}),
+          imageminJpegRecompress({
+            loops: 5,
+            min: 65,
+            max: 70,
+            quality: 'medium'
+          }),
+          imagemin.optipng({optimizationLevel: 3}),
+          pngquant({quality: [0.65, 0.7], speed: 5}),
+        ]))
 				.pipe(gulp.dest('./build/img/'))
 				.pipe(browserSync.stream());
 }
