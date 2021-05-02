@@ -6,6 +6,10 @@ const sourcemaps = require('gulp-sourcemaps');
 const gulpIf = require('gulp-if');
 const gcmq = require('gulp-group-css-media-queries');
 const sass = require('gulp-sass');
+const svgmin = require('gulp-svgmin');
+const cheerio = require('gulp-cheerio');
+const replace = require('gulp-replace');
+const svgSprite = require('gulp-svg-sprite');
 const browserSync = require('browser-sync').create();
 
 let isMap = process.argv.includes('--map');
@@ -37,10 +41,37 @@ function styles(){
 }
 
 function images(){
-	return gulp.src('./src/img/**/*')
+	return gulp.src('./src/img/**/*.{jpg,png}')
 				// size down, webp
 				.pipe(gulp.dest('./build/img/'))
 				.pipe(browserSync.stream());
+}
+
+function svg(){
+	return gulp.src('./src/img/**/*.svg')
+					.pipe(svgmin({
+						js2svg: {
+							pretty: true
+						}
+					}))
+					.pipe(cheerio({
+						run: function ($) {
+							$('[fill]').removeAttr('fill');
+							$('[stroke]').removeAttr('stroke');
+							$('[style]').removeAttr('style');
+						},
+						parserOptions: {xmlMode: true}
+					}))
+					.pipe(replace('&gt;', '>'))
+        	// build svg sprite
+					.pipe(svgSprite({
+						mode: {
+							symbol: {
+								sprite: 'sprite.svg'
+							}
+						}
+					}))
+					.pipe(gulp.dest('./build/img/'));
 }
 
 function watch(){
@@ -54,9 +85,10 @@ browserSync.init({
 	gulp.watch('./src/scss/**/*.scss', styles);
 	gulp.watch('./src/**/*.html', html);
 	gulp.watch('./src/img/**/*', images);
+	gulp.watch('./src/img/**/*', svg);
 }
 
-let build = gulp.parallel(html, styles, images);
+let build = gulp.parallel(html, styles, images, svg);
 let buildWithClean = gulp.series(clean, build);
 let dev = gulp.series(buildWithClean, watch);
 

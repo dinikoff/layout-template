@@ -9,17 +9,9 @@
     "lint:scss:fix": "stylelint 'src/**/*.scss' --syntax scss --fix",
     "lint:html": "htmlhint './src/**/*.html'"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dinikoff/landing-page-1.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dinikoff/landing-page-1/issues"
-  },
-  "homepage": "https://github.com/dinikoff/landing-page-1#readme",
   "dependencies": {
     "scss-reset": "^1.1.11"
   },
@@ -28,11 +20,15 @@
     "del": "^5.1.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.0",
+    "gulp-cheerio": "^1.0.0",
     "gulp-clean-css": "^4.2.0",
     "gulp-group-css-media-queries": "^1.2.2",
     "gulp-if": "^3.0.0",
+    "gulp-replace": "^1.1.2",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
+    "gulp-svg-sprite": "^1.5.0",
+    "gulp-svgmin": "^3.0.0",
     "htmlhint": "^0.14.2",
     "node-sass": "^5.0.0",
     "stylelint": "^13.13.0",
